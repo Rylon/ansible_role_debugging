@@ -1,0 +1,28 @@
+---
+
+dependencies:
+  - role:          user
+    user_state:    present
+    user_username: mrbashshell
+    user_fullname: Mr Bash Shell
+    user_sudoers:  true
+
+  - role:          user
+    user_state:    present
+    user_username: someone
+    user_fullname: Mr Someone
+    user_sudoers:  true
+
+  - role:          user
+    user_state:    present
+    user_username: mrfalseshell
+    user_fullname: Mr False Shell
+    user_sudoers:  true
+    user_shell:    /bin/false
+
+  - role:          user
+    user_state:    present
+    user_username: mrtrueshell
+    user_fullname: Mr True Shell
+    user_sudoers:  true
+    user_shell:    /bin/true

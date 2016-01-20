@@ -1,0 +1,48 @@
+---
+
+- name: "Create group '{{ user_username }}'"
+  group: 
+    name:  "{{ user_username }}"
+    state: present
+
+# The next two tasks are necessary here because if you want an automatically generated UID, 
+# you need to NOT specify the 'uid' attribute at all, setting it to `false` isn't enough.
+- name: "Create user '{{ user_username }}'"
+  user: 
+    name:       "{{ user_username }}"
+    state:      present
+    group:      "{{ user_username }}"
+    groups:     "{{ user_groups | join(',') }}"
+    shell:      "{{ user_shell }}"
+    comment:    "{{ user_fullname }}"
+    createhome: yes
+    home:       "{{ user_home | default('/home/' + user_username) }}"
+  when: user_uid == false
+- name: "Create user '{{ user_username }}'"
+  user: 
+    name:       "{{ user_username }}"
+    state:      present
+    group:      "{{ user_username }}"
+    groups:     "{{ user_groups | join(',') }}"
+    shell:      "{{ user_shell }}"
+    comment:    "{{ user_fullname }}"
+    createhome: yes
+    home:       "{{ user_home | default('/home/' + user_username) }}"
+    uid:        "{{ user_uid }}"
+  when: user_uid != false
+
+- name: "Managing authorized_keys file for '{{ user_username }}'"
+  authorized_key:
+    exclusive: yes
+    user:      "{{ user_username }}"
+    key:       "{{ user_keys | join('\n') }}"
+  when: user_state == "present"
+
+- name: "Add sudoers config for '{{ user_username }}'"
+  template: 
+    src:   sudoers.d.j2
+    dest:  /etc/sudoers.d/{{ user_username }}
+    owner: root
+    group: root
+    mode:  0440
+  when: user_state == "present"    

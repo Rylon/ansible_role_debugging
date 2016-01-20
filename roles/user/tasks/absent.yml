@@ -1,0 +1,17 @@
+---
+
+- name: "Remove user '{{ user_username }}'"
+  user: 
+    name:   "{{ user_username }}"
+    state:  absent
+    remove: yes
+
+- name: "Remove group '{{ user_username }}'"
+  group: 
+    name:  "{{ user_username }}"
+    state: present
+
+- name: "Remove sudoers config for '{{ user_username }}'"
+  file:
+    state: absent 
+    path:  "/etc/sudoers.d/{{ user_username }}"

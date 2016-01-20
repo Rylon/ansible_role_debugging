@@ -1,0 +1,9 @@
+---
+
+- name: Broken Playbook
+  hosts: all
+  user: vagrant
+  become: yes
+
+  roles:
+    - wrapper_role

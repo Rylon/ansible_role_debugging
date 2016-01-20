@@ -1,0 +1,15 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: Ryan Conway
+  description: A parameterised role for creating one or more user accounts, and managing their SSH keys.
+  license: MIT
+  min_ansible_version: 1.9
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+  categories:
+    - system

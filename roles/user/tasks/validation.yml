@@ -1,0 +1,28 @@
+---
+
+- name: Fail unless Ubuntu version is 14.04 (Trusty)
+  fail: msg="This role was not tested on {{ ansible_distribution }} {{ ansible_distribution_version }}"
+  when: ansible_distribution != 'Ubuntu' or ansible_distribution_version | version_compare('14.04', '!=')
+
+- name: Fail unless 'user_username' is defined.
+  fail: msg="Required variable 'user_username' is not defined."
+  when: user_username is not defined
+
+# The 'user_fullname' parameter is only required when creating the user.
+- name: Fail unless 'user_fullname' is defined (but only when the 'user_state' is 'present').
+  fail: msg="Required variable 'user_fullname' is not defined."
+  when: user_fullname is not defined and user_state == "present"
+
+- name: Fail if 'user_state' is not valid
+  fail: msg="Required variable 'user_state' must be either 'present' or 'absent'."
+  when: user_state not in ["present", "absent"]
+
+- name: Fail if 'user_sudoers' is not valid
+  fail: msg="[{{ user_username }}] Required variable 'user_sudoers' must be either 'true' or 'false'."
+  when: user_sudoers not in [true, false]
+
+- name: "Shell for {{user_username}}"
+  debug:
+    msg: "{{item}}"
+  with_items:
+    - "{{user_shell}}"

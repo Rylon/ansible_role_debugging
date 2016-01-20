@@ -1,0 +1,7 @@
+---
+user_state:   present
+user_groups:  []
+user_sudoers: false
+user_keys:    []
+user_shell:   /bin/bash
+user_uid:     false

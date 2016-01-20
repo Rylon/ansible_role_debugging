@@ -1,0 +1,13 @@
+---
+
+- include: validation.yml
+
+- name: Log user and groups that will be created
+  debug: 
+    msg: "State '{{ user_state }}' User '{{ user_username }}' belonging to groups '{{ user_groups | join(',')}}'"
+
+- include: present.yml
+  when: user_state == "present"
+
+- include: absent.yml
+  when: user_state == "absent"
